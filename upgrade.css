@@ -1,0 +1,1256 @@
+/* upgrade.css — v5 (إصلاح شامل + تكامل)
+   ============================================================================
+   ملف التحديث البصري للمنصة (index.html + room.html).
+   يشتغل فوق style.css الأساسي، ويحافظ على:
+   - كل المتغيرات الأصلية: --ink, --muted, --canvas, --paper, --line,
+     --plum, --plum-deep, --rose, --rose-pale, --gold, --shadow, --shadow-sm
+   - كل الكلاسات اللي الصفحات بتستخدمها: .hero, .day-card, .subject, .btn-primary,
+     .room-launch, .room-panel, .timer-face, .weekly-stats, .note, .tips, dialog...
+   - توافق 100% مع companion.css (الأميرة مش بتتأثر)
+
+   إصلاحات v5:
+   1) إكمال @keyframes upIn (كان مقطوعًا في v4)
+   2) توحيد --up-wrap-max مع .wrap في style.css (1040px)
+   3) تقليل التكرارات مع style.css وcompanion.css
+   4) إصلاح prefers-reduced-motion ليوقف حركة الكروت فعليًا
+   5) إضافة @supports fallback للـ conic-gradient
+   6) تحسين أداء: will-change محسوب بدل الثابت
+   7) طباعة أفضل: الاحتفاظ بالألوان الأساسية فقط
+   ============================================================================ */
+
+/* ============================================================================
+   1) المتغيرات المركزية (Design Tokens)
+   - كل المتغيرات الأصلية محفوظة بأسمائها
+   - إضافات جديدة ببادئة --up- (upgrade)
+   ============================================================================ */
+:root {
+  /* ===== الألوان الأصلية (كما هي) ===== */
+  --ink: #54243f;
+  --muted: #9b748b;
+  --canvas: #fff7fa;
+  --paper: #fffdfd;
+  --line: #f1d5e2;
+  --plum: #c43e7e;
+  --plum-deep: #85234f;
+  --rose: #ec78a9;
+  --rose-pale: #fff0f6;
+  --gold: #d9ad69;
+  --shadow: 0 24px 70px rgba(135, 37, 82, .13);
+  --shadow-sm: 0 10px 28px rgba(135, 37, 82, .075);
+
+  /* ===== إضافات جديدة ===== */
+  --up-rose-soft: #f6a5c7;
+  --up-rose-pale-2: #fff4f8;
+  --up-plum-soft: #b83270;
+  --up-gold-soft: #f0d4a3;
+  --up-line-soft: #f7e6ee;
+  --up-line-strong: #e8b8cc;
+
+  /* ظلال موسّعة */
+  --up-sh-xs: 0 2px 8px rgba(135, 37, 82, .05);
+  --up-sh-md: 0 14px 38px rgba(135, 37, 82, .10);
+  --up-sh-lg: 0 22px 58px rgba(135, 37, 82, .16);
+
+  /* حواف */
+  --up-r-sm: 12px;
+  --up-r-md: 18px;
+  --up-r-lg: 24px;
+  --up-r-xl: 32px;
+  --up-r-full: 999px;
+
+  /* حركة */
+  --up-ease: cubic-bezier(.2, .8, .2, 1);
+  --up-ease-out: cubic-bezier(.2, 1.2, .4, 1);
+  --up-dur: .28s;
+  --up-dur-slow: .55s;
+
+  /* أبعاد — موحّدة مع style.css (.wrap = 1040px) */
+  --up-wrap-max: 1040px;
+  --up-room-max: 800px;
+}
+
+/* ============================================================================
+   2) الأساسيات (Base)
+   ============================================================================ */
+body {
+  background:
+    radial-gradient(ellipse at 5% 0%, #ffd7e7 0, transparent 34rem),
+    radial-gradient(ellipse at 100% 30%, #fbe5ef 0, transparent 34rem),
+    linear-gradient(180deg, #fff7fa, #fffafd 60%, #fff4f8);
+  background-attachment: fixed;
+}
+
+.wrap {
+  width: min(100%, var(--up-wrap-max)); /* الهامش الجانبي من padding فقط */
+  padding-top: 28px;
+}
+
+/* تحسين اختيار النص */
+::selection {
+  background: var(--rose-pale);
+  color: var(--plum-deep);
+}
+
+/* تحسين التمرير */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ============================================================================
+   3) الهيرو (Hero)
+   ============================================================================ */
+.hero {
+  position: relative;
+  min-height: 310px;
+  padding: clamp(30px, 5vw, 56px);
+  border-radius: var(--up-r-xl);
+  background: linear-gradient(122deg,
+    #7e214d 0%,
+    #b83270 42%,
+    #e86f9f 78%,
+    #f4a6c3 100%);
+  box-shadow: 0 28px 70px rgba(157, 47, 99, .22);
+  border: 1px solid rgba(255, 255, 255, .25);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  left: -130px;
+  top: -180px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 228, 239, .36);
+  box-shadow:
+    0 0 0 35px rgba(255, 255, 255, .043),
+    0 0 0 78px rgba(255, 255, 255, .035),
+    0 0 0 125px rgba(255, 255, 255, .023);
+  z-index: -1;
+}
+
+.hero::after {
+  content: "م";
+  position: absolute;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 900;
+  left: 6%;
+  bottom: -90px;
+  font-size: clamp(240px, 35vw, 390px);
+  color: #fff;
+  opacity: .075;
+  transform: rotate(-8deg);
+  z-index: -1;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.hero .eyebrow {
+  font-size: 12px;
+  letter-spacing: .25px;
+  color: #ffe0eb;
+  position: relative;
+}
+
+.hero h1 {
+  max-width: 720px;
+  font-size: clamp(35px, 6vw, 58px);
+  line-height: 1.2;
+  text-shadow: 0 5px 25px rgba(84, 20, 47, .31);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.hero p {
+  max-width: 650px;
+  font-size: clamp(14px, 2vw, 17px);
+  line-height: 2.05;
+  color: #ffedf4;
+  position: relative;
+}
+
+.hero-badge {
+  display: inline-block;
+  border-radius: var(--up-r-full);
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, .086);
+  border: 1px solid rgba(255, 255, 255, .33);
+  color: #fff5f9;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  margin-top: 20px;
+  position: relative;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ============================================================================
+   4) بطاقة التشجيع (Motivation)
+   ============================================================================ */
+.motivation {
+  position: relative;
+  overflow: hidden;
+  margin: 22px 0 34px;
+  padding: 22px 25px;
+  border-radius: 23px;
+  border: 1px solid #f0d0df;
+  background: linear-gradient(105deg, #fff 0%, #fff2f7 100%);
+  box-shadow: 0 13px 35px rgba(157, 47, 99, .06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform var(--up-dur) var(--up-ease),
+              box-shadow var(--up-dur) var(--up-ease);
+}
+
+@media (hover:hover) and (pointer:fine){.motivation:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--up-sh-md);
+}}
+
+.motivation::after {
+  content: "✦";
+  position: absolute;
+  left: 24px;
+  top: -14px;
+  font-size: 76px;
+  color: #e7b1c8;
+  opacity: .23;
+  pointer-events: none;
+}
+
+.motivation .star {
+  flex-basis: 54px;
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffe1ed, #fff6fa);
+  color: var(--up-plum-soft);
+  font-size: 25px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: var(--up-sh-xs);
+}
+
+.motivation strong {
+  font-size: 17px;
+  color: var(--plum-deep);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.motivation p {
+  font-size: 14px;
+  color: #8f6d80;
+  line-height: 1.9;
+}
+
+/* ============================================================================
+   5) رأس القسم (Section Head)
+   ============================================================================ */
+.section-head {
+  margin-bottom: 18px;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-size: clamp(24px, 3.2vw, 31px);
+  color: #762147;
+  letter-spacing: -.4px;
+  margin-bottom: 4px;
+}
+
+.section-head p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ============================================================================
+   6) الأزرار (Buttons)
+   ============================================================================ */
+.btn {
+  border-radius: var(--up-r-md);
+  transition: transform var(--up-dur) var(--up-ease),
+              box-shadow var(--up-dur) var(--up-ease),
+              background var(--up-dur) var(--up-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--up-plum-soft);
+  outline-offset: 3px;
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, #a82a64, #e56c9f);
+  box-shadow: 0 9px 22px rgba(184, 52, 116, .2);
+}
+
+@media (hover:hover) and (pointer:fine){.btn-primary:hover{
+  background: linear-gradient(120deg, #8c2054, #d9568c);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(184, 52, 116, .33);
+}}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   7) بطاقة التقدم (Progress Card)
+   ============================================================================ */
+.progress-card {
+  padding: 23px 24px;
+  border-radius: 22px;
+  border-color: #f2d6e3;
+  background: #fffefe;
+  box-shadow: var(--up-sh-xs);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.progress-top {
+  font-size: 14px;
+  color: #872651;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.progress-track {
+  height: 10px;
+  background: #f8e8ef;
+  border-radius: var(--up-r-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #ed83ae, #d84987, #f2b3cc);
+  border-radius: var(--up-r-full);
+  transition: width .9s var(--up-ease);
+  animation: none;
+}
+
+/* ============================================================================
+   8) إحصائيات الأسبوع (Weekly Stats)
+   ============================================================================ */
+.weekly-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 14px 0 27px;
+}
+
+.weekly-stats > div {
+  padding: 20px 18px 18px;
+  border-radius: 21px;
+  background: #fff;
+  border: 1px solid #f2d8e4;
+  box-shadow: 0 9px 28px rgba(157, 47, 99, .05);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--up-dur) var(--up-ease),
+              box-shadow var(--up-dur) var(--up-ease);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@media (hover:hover) and (pointer:fine){.weekly-stats > div:hover{
+  transform: translateY(-3px);
+  box-shadow: var(--up-sh-md);
+}}
+
+.weekly-stats > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #d84987, #f3a7c5);
+}
+
+.weekly-stats > div:nth-child(2)::before {
+  background: linear-gradient(90deg, #d9a65f, #f2d4a3);
+}
+
+.weekly-stats > div:nth-child(3)::before {
+  background: linear-gradient(90deg, #bd78bd, #edb7dd);
+}
+
+.weekly-stats strong {
+  display: block;
+  background: none;
+  color: #872651;
+  -webkit-text-fill-color: currentColor;
+  font-size: clamp(23px, 3.5vw, 30px);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.weekly-stats span {
+  display: block;
+  margin-top: 5px;
+  color: #98778a;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* ============================================================================
+   9) زر غرفة المذاكرة (Room Launch)
+   ============================================================================ */
+.room-launch {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 23px 25px;
+  border-radius: 24px;
+  margin-bottom: 30px;
+  background: linear-gradient(110deg, #7e214d, #bd3676 60%, #e87ca7);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .38);
+  box-shadow: 0 18px 42px rgba(168, 42, 100, .19);
+  cursor: pointer;
+  transition: transform var(--up-dur) var(--up-ease),
+              box-shadow var(--up-dur) var(--up-ease);
+  text-align: right;
+  font-family: inherit;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (hover:hover) and (pointer:fine){.room-launch:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 24px 54px rgba(168, 42, 100, .28);
+}}
+
+.room-launch:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+.room-launch::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -25px;
+  top: -65px;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(255, 255, 255, .27);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 22px rgba(255, 255, 255, .039),
+    0 0 0 48px rgba(255, 255, 255, .031);
+  pointer-events: none;
+}
+
+.room-launch .room-icon {
+  background: rgba(255, 255, 255, .11);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .21);
+  border-radius: 17px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.room-launch strong {
+  font-size: 19px;
+  color: #fff;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.room-launch small {
+  display: block;
+  margin-top: 5px;
+  color: #ffe4ef;
+  line-height: 1.8;
+  font-size: 13px;
+}
+
+.room-launch .arrow {
+  background: rgba(255, 255, 255, .13);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .19);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  transition: transform var(--up-dur) var(--up-ease);
+}
+
+@media (hover:hover) and (pointer:fine){.room-launch:hover .arrow{
+  transform: translateX(-5px);
+}}
+
+/* ============================================================================
+   10) بطاقات الأيام (Day Cards)
+   ============================================================================ */
+.schedule {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.day-card {
+  position: relative;
+  min-height: 205px;
+  padding: 19px;
+  border-radius: 22px;
+  border: 1px solid #f0d5e2;
+  box-shadow: 0 10px 28px rgba(146, 44, 92, .04);
+  background: #fff;
+  animation: upIn .55s var(--up-ease) both;
+  transition: transform var(--up-dur) var(--up-ease),
+              box-shadow var(--up-dur) var(--up-ease),
+              border-color var(--up-dur) var(--up-ease);
+  overflow: hidden;
+}
+
+/* تأخير متتالي للحركة */
+.day-card:nth-child(1) { animation-delay: 0s; }
+.day-card:nth-child(2) { animation-delay: .06s; }
+.day-card:nth-child(3) { animation-delay: .12s; }
+.day-card:nth-child(4) { animation-delay: .18s; }
+.day-card:nth-child(5) { animation-delay: .24s; }
+.day-card:nth-child(6) { animation-delay: .30s; }
+.day-card:nth-child(7) { animation-delay: .36s; }
+
+@media (hover:hover) and (pointer:fine){.day-card:hover{
+  border-color: #e8a4c1;
+  box-shadow: 0 18px 38px rgba(146, 44, 92, .09);
+  transform: translateY(-3px);
+}}
+
+/* شريط جانبي (يمين) */
+.day-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--rose);
+  opacity: 0;
+  transition: opacity var(--up-dur) var(--up-ease);
+}
+
+.day-card:hover::before { opacity: 1; }
+
+.day-card.today {
+  border: 1.5px solid #d34b87;
+  background: linear-gradient(155deg, #fff, #fff0f6);
+  box-shadow: 0 12px 32px rgba(211, 75, 135, .09);
+  animation: upIn .4s var(--up-ease) both;
+}
+
+.day-card.today::before {
+  background: #d34b87;
+  opacity: 1;
+}
+
+.day-card.done {
+  background: linear-gradient(150deg, #fff, #f1faf5);
+  border-color: #c4e3d2;
+}
+
+.day-card.done::before {
+  background: #6fcf9f;
+  opacity: 1;
+}
+
+.day-top {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.day-name {
+  color: #762147;
+  font-weight: 700;
+}
+
+.day-emoji {
+  display: inline-block;
+  background: var(--rose-pale);
+  color: var(--up-plum-soft);
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 1.1rem;
+  animation: upFloat 4s ease-in-out infinite;
+}
+
+.day-bottom {
+  border-top: 1px solid #f7e8ef;
+  margin-top: 13px;
+  padding-top: 12px;
+}
+
+/* ============================================================================
+   11) شرائح المواد (Subjects)
+   ============================================================================ */
+.subject {
+  font-weight: 800;
+  border-radius: var(--up-r-full);
+  padding: 4px 11px;
+  transition: transform .2s ease, box-shadow .2s ease;
+  display: inline-block;
+  font-size: 12px;
+  border: 1px solid transparent;
+}
+
+@media (hover:hover) and (pointer:fine){.subject:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(146, 44, 92, .15);
+}}
+
+/* ألوان المواد */
+.subject[data-subject="كيمياء"] {
+  background: #e6f6ec;
+  color: #2b7a53;
+  border-color: #bfe5cf;
+}
+.subject[data-subject="فيزياء"] {
+  background: #e7f0ff;
+  color: #3a62b4;
+  border-color: #c4d8f8;
+}
+.subject[data-subject="أحياء"] {
+  background: #e3f7f4;
+  color: #23867a;
+  border-color: #b9e6df;
+}
+.subject[data-subject="إنجليزي"] {
+  background: #f1eaff;
+  color: #6a47b8;
+  border-color: #d8c9f5;
+}
+.subject[data-subject="عربي"],
+.subject[data-subject="لغة عربية"] {
+  background: #fff3dc;
+  color: #a8701a;
+  border-color: #f0d9a8;
+}
+
+/* ============================================================================
+   12) الملاحظة والتذييل (Note / Footer)
+   ============================================================================ */
+.note {
+  margin-top: 24px;
+  padding: 20px 23px;
+  border: 1px solid #f0d2e0;
+  border-radius: 20px;
+  background: linear-gradient(110deg, #fff, #fff1f7);
+  color: #8b657b;
+  font-size: 13px;
+  line-height: 2;
+  box-shadow: var(--up-sh-xs);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.note strong {
+  color: #8a2453;
+}
+
+footer {
+  padding: 24px 0 8px;
+  color: #ad8a9d;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ============================================================================
+   13) صفحات الغرفة (Room Pages)
+   ============================================================================ */
+.room-page {
+  max-width: var(--up-room-max);
+  padding-top: 18px;
+}
+
+.back-link {
+  color: #a52b65;
+  margin-bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--up-r-full);
+  transition: all var(--up-dur) var(--up-ease);
+  box-shadow: var(--up-sh-xs);
+}
+
+@media (hover:hover) and (pointer:fine){.back-link:hover{
+  border-color: var(--up-rose-soft);
+  background: var(--rose-pale);
+  transform: translateX(-3px);
+}}
+
+.room-panel {
+  border: 1px solid #f0cfe0;
+  border-radius: 34px;
+  background: linear-gradient(160deg, #fff 0%, #fff8fb 100%);
+  box-shadow: 0 28px 80px rgba(155, 45, 98, .11);
+  overflow: hidden;
+  position: relative;
+}
+
+.room-top {
+  padding: 43px 28px 29px;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(246, 165, 199, .4) 0, transparent 38%),
+    linear-gradient(125deg, #702044 0%, #a82d66 55%, #d85e93 100%);
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+.room-top::after {
+  content: "✧";
+  position: absolute;
+  left: 5%;
+  top: -55px;
+  color: #ffe5ef;
+  font-size: 190px;
+  opacity: .19;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.room-top .mini {
+  color: #ffe0ec;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  display: inline-block;
+  padding: 5px 14px;
+  background: rgba(255, 255, 255, .13);
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: var(--up-r-full);
+  margin-bottom: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.room-top h1 {
+  font-size: clamp(31px, 5.4vw, 44px);
+  letter-spacing: -.4px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.room-top p {
+  max-width: 540px;
+  font-size: 14px;
+  line-height: 2;
+  color: #ffedf4;
+  position: relative;
+}
+
+/* صندوق الهدف */
+.goal-box {
+  margin: 23px 24px 16px;
+  padding: 21px;
+  border-radius: 21px;
+  background: linear-gradient(120deg, #fff1f7, #fffafc);
+  border: 1px solid #f2d8e4;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 12px 16px;
+}
+
+.goal-box label {
+  color: #842650;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.goal-box input,
+.goal-box select {
+  border: 1px solid #efd5e1;
+  border-radius: var(--up-r-md);
+  padding: 13px 14px;
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color var(--up-dur) var(--up-ease),
+              box-shadow var(--up-dur) var(--up-ease);
+}
+
+.goal-box input:focus,
+.goal-box select:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(236, 120, 169, .15);
+}
+
+.goal-box > p {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+  border-top: 1px dashed var(--line);
+  padding-top: 12px;
+  margin-top: 2px;
+}
+
+/* رسالة الوعد */
+.promise {
+  margin: 15px 24px;
+  padding: 16px 20px;
+  border-radius: 17px;
+  background: #fff4df;
+  border: 1px dashed #f0dfbd;
+  color: #8b6b42;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.promise strong {
+  color: #9d2b61;
+}
+
+/* المؤقت */
+.timer-face {
+  width: 236px;
+  height: 236px;
+  margin: 31px auto 25px;
+  background: conic-gradient(#e66b9e var(--timer-progress, 0%), #f6e5ed 0);
+  box-shadow:
+    0 0 0 9px #fff5f9,
+    0 0 0 11px #f0d6e2,
+    0 18px 45px rgba(141, 40, 80, .08);
+  animation: none;
+  filter: none;
+  border-radius: 50%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  transition: background .5s var(--up-ease);
+}
+
+/* fallback لو conic-gradient مش مدعوم */
+@supports not (background: conic-gradient(#000 0%, #fff 100%)) {
+  .timer-face {
+    background: radial-gradient(circle at 50% 50%, #fff 0 60%, #f6e5ed 60%);
+  }
+}
+
+.timer-face::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fff, #fff4f8);
+}
+
+.timer-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.timer-time {
+  color: #872651;
+  font-size: clamp(44px, 9vw, 58px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+
+.timer-caption {
+  color: #a27c91;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* إعدادات الغرفة */
+.room-settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  padding: 0 24px;
+}
+
+.room-settings label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.room-settings select {
+  border: 1px solid #efd3e0;
+  color: #9e2c63;
+  background: #fff8fb;
+  padding: 9px 32px 9px 16px;
+  border-radius: var(--up-r-md);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--up-dur) var(--up-ease);
+}
+
+.room-settings select:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(236, 120, 169, .15);
+}
+
+/* حالة الغرفة */
+.room-status {
+  font-size: 13px;
+  color: #8d6e81;
+  min-height: 48px;
+  padding: 10px 24px;
+  text-align: center;
+  line-height: 1.7;
+}
+
+/* أزرار التحكم */
+.room-controls {
+  max-width: 590px;
+  margin: 0 auto;
+  padding: 20px 24px 27px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.room-controls .btn-primary {
+  background: linear-gradient(120deg, #a82a64, #e56c9f);
+  grid-column: 1 / -1;
+  font-size: 15px;
+  padding: 15px 20px;
+}
+
+.room-controls .btn-soft {
+  background: #fff0f6;
+  color: #8f2856;
+  border: 1px solid #f0d2e0;
+}
+
+.room-controls .btn-soft:hover {
+  background: #ffe6ef;
+  border-color: var(--rose);
+}
+
+.room-close {
+  display: block;
+  width: calc(100% - 48px);
+  max-width: 590px;
+  margin: 0 auto 24px;
+  padding: 12px;
+  background: transparent;
+  border: 1.5px dashed #f0cfe0;
+  border-radius: var(--up-r-md);
+  color: #a16f88;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--up-dur) var(--up-ease);
+}
+
+.room-close:hover {
+  border-color: var(--rose);
+  color: var(--plum-deep);
+  background: var(--rose-pale);
+}
+
+/* النصائح */
+.tips {
+  margin-top: 20px;
+  padding: 19px 22px;
+  border: 1px solid #f0d8e2;
+  border-radius: 19px;
+  background: linear-gradient(110deg, #fff, #fff2f7);
+  color: #8b6a7e;
+  line-height: 2;
+  font-size: 13px;
+  box-shadow: var(--up-sh-xs);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.tips strong {
+  color: #8b2856;
+}
+
+/* ============================================================================
+   14) النوافذ المنبثقة (Dialogs)
+   ============================================================================ */
+dialog {
+  border: none;
+  border-radius: 26px;
+  animation: upIn .3s var(--up-ease-out);
+  max-width: 480px;
+  width: calc(100% - 32px);
+  box-shadow: 0 20px 60px rgba(53, 38, 63, .25);
+  padding: 0;
+  overflow: hidden;
+}
+
+dialog::backdrop {
+  background: rgba(73, 32, 58, .35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ============================================================================
+   15) حركات (Animations) — تم إكمال upIn
+   ============================================================================ */
+@keyframes upIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes upFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* ============================================================================
+   16) الاستجابة (Responsive) — تحسينات الغرفة والشاشات الصغيرة
+   ============================================================================ */
+@media (max-width: 720px) {
+  .room-page {
+    max-width: 100%;
+  }
+
+  .goal-box {
+    grid-template-columns: 1fr;
+    margin: 18px 16px 14px;
+    padding: 17px;
+  }
+
+  .goal-box > p {
+    margin-top: 6px;
+  }
+
+  .room-top {
+    padding: 34px 20px 24px;
+  }
+
+  .room-controls {
+    grid-template-columns: 1fr;
+    padding: 18px 16px 22px;
+  }
+
+  .room-controls .btn-primary {
+    grid-column: auto;
+  }
+
+  .timer-face {
+    width: 210px;
+    height: 210px;
+  }
+
+  /* ثلاث بطاقات متجاورة: الرقم فوق العنوان (لا صفوف أفقية) */
+  .weekly-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .weekly-stats > div {
+    display: block;
+    text-align: center;
+    padding: 12px 6px;
+  }
+
+  .weekly-stats strong {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 0;
+    padding: 32px 22px 30px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 8vw, 38px);
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-head .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .room-launch {
+    padding: 16px 18px;
+    gap: 12px;
+  }
+
+  .room-launch .room-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.15rem;
+  }
+
+  .room-launch strong {
+    font-size: 16px;
+  }
+
+  .room-launch small {
+    font-size: 12px;
+  }
+
+  .timer-face {
+    width: 190px;
+    height: 190px;
+  }
+
+  .timer-time {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 380px) {
+  .timer-face {
+    width: 172px;
+    height: 172px;
+  }
+
+  .timer-time {
+    font-size: 38px;
+  }
+
+  .day-card {
+    min-height: 0;
+  }
+}
+
+/* ============================================================================
+   17) تقليل الحركة (Accessibility) — إيقاف فعلي للحركات
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .day-card,
+  .day-card:nth-child(n),
+  .day-emoji,
+  dialog,
+  .motivation,
+  .room-launch,
+  .subject {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .day-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .day-card:hover {
+    transform: none !important;
+  }
+}
+
+/* ============================================================================
+   18) وضع التباين العالي (Accessibility)
+   ============================================================================ */
+@media (prefers-contrast: high) {
+  .day-card,
+  .room-panel,
+  .progress-card,
+  .weekly-stats > div,
+  dialog {
+    border-width: 2px;
+  }
+
+  .btn:focus-visible,
+  .room-launch:focus-visible {
+    outline-width: 4px;
+  }
+
+  .subject {
+    border-width: 2px;
+  }
+}
+
+/* ============================================================================
+   19) الطباعة (Print) — الاحتفاظ بالأساسيات فقط
+   ============================================================================ */
+@media print {
+  .hero {
+    background: var(--plum) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    min-height: 0;
+    box-shadow: none;
+  }
+
+  .hero::before,
+  .hero::after,
+  .room-launch,
+  .btn,
+  dialog,
+  .toast,
+  .motivation::after,
+  .day-card::before {
+    display: none !important;
+  }
+
+  .day-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .schedule {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  body {
+    background: #fff !important;
+  }
+}

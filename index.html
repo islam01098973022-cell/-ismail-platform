@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#d94f8a">
+<meta name="description" content="مساحة ملك لتنظيم المذاكرة، متابعة الإنجاز، والتركيز خطوة بخطوة.">
+<title>مساحة ملك | جدول المذاكرة</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="icons.css">
+<link rel="stylesheet" href="companion.css">
+<link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="malak.css">
+
+<style>
+/* ============ تحسينات الشكل (Scoped للأمان) ============ */
+.wrap{
+  max-width:920px;
+  margin:0 auto;
+  padding:18px 16px 32px;
+  line-height:1.7;
+}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;
+  padding:22px 20px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#fff5fa 0%,#fdeaf3 60%,#fbe0ee 100%);
+  border:1px solid #f6d3e4;
+  box-shadow:0 6px 20px rgba(196,62,126,.08);
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  top:-60px; left:-60px;
+  width:180px; height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(196,62,126,.14),transparent 70%);
+  pointer-events:none;
+}
+.hero .eyebrow{
+  display:inline-block;
+  font-size:.72rem;
+  font-weight:700;
+  color:#c43e7e;
+  background:#fff;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid #f6d3e4;
+  margin-bottom:10px;
+  letter-spacing:.2px;
+}
+.hero h1{
+  font-size:1.22rem;
+  line-height:1.5;
+  margin:0 0 8px;
+  color:#7a2350;
+  font-weight:800;
+}
+.hero p{
+  font-size:.86rem;
+  color:#6b4557;
+  margin:0 0 12px;
+}
+.hero-badge{
+  display:inline-block;
+  font-size:.72rem;
+  font-weight:700;
+  color:#a12b62;
+  background:rgba(255,255,255,.75);
+  padding:5px 12px;
+  border-radius:999px;
+  border:1px dashed #eab6cf;
+}
+
+/* ===== Motivation ===== */
+.motivation{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:14px 16px;
+  border-radius:16px;
+  background:#fffaf4;
+  border:1px solid #f5e2c4;
+  border-right:4px solid #e6a83f;
+  margin-bottom:16px;
+  box-shadow:0 2px 10px rgba(230,168,63,.06);
+}
+.motivation .star{
+  font-size:1.25rem;
+  color:#e6a83f;
+  line-height:1;
+  margin-top:2px;
+  flex-shrink:0;
+}
+.motivation strong{
+  display:block;
+  font-size:.88rem;
+  color:#8a5a12;
+  margin-bottom:3px;
+}
+.motivation p{
+  font-size:.79rem;
+  color:#7a6034;
+  margin:0;
+  line-height:1.65;
+}
+
+/* ===== Section Head ===== */
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 12px;
+  flex-wrap:wrap;
+}
+.section-head h2{
+  font-size:1.05rem;
+  margin:0 0 2px;
+  color:#7a2350;
+  font-weight:800;
+}
+.section-head p{
+  font-size:.76rem;
+  color:#8a6a78;
+  margin:0;
+}
+.section-head .btn{
+  font-size:.78rem;
+  padding:8px 14px;
+  white-space:nowrap;
+}
+
+/* ===== Progress Card ===== */
+.progress-card{
+  padding:13px 16px;
+  border-radius:16px;
+  background:#fff;
+  border:1px solid #f1d9e6;
+  box-shadow:0 2px 10px rgba(196,62,126,.05);
+  margin-bottom:10px;
+}
+.progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:.79rem;
+  color:#6b4557;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.progress-top span:last-child{
+  color:#c43e7e;
+  font-weight:800;
+  font-size:.82rem;
+}
+.progress-track{
+  height:8px;
+  background:#f7e6ef;
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#e07bb0,#c43e7e);
+  border-radius:999px;
+  transition:width .5s ease;
+}
+
+/* ===== Weekly Stats ===== */
+.weekly-stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-bottom:12px;
+}
+.weekly-stats > div{
+  background:#fff;
+  border:1px solid #f1d9e6;
+  border-radius:12px;
+  padding:10px 8px;
+  text-align:center;
+  box-shadow:0 1px 6px rgba(196,62,126,.04);
+}
+.weekly-stats strong{
+  display:block;
+  font-size:.95rem;
+  color:#c43e7e;
+  font-weight:800;
+  line-height:1.2;
+}
+.weekly-stats span{
+  display:block;
+  font-size:.67rem;
+  color:#8a6a78;
+  margin-top:3px;
+}
+
+/* ===== Room Launch ===== */
+.room-launch{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:12px 16px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#c43e7e,#a12b62);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  text-align:right;
+  box-shadow:0 6px 18px rgba(196,62,126,.22);
+  transition:transform .15s ease, box-shadow .15s ease;
+  margin-bottom:16px;
+}
+@media (hover:hover) and (pointer:fine){.room-launch:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 22px rgba(196,62,126,.3);
+}}
+.room-launch:active{ transform:translateY(0); }
+.room-launch .room-icon{
+  font-size:1.4rem;
+  background:rgba(255,255,255,.18);
+  width:38px; height:38px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.room-launch strong{
+  display:block;
+  font-size:.9rem;
+  font-weight:800;
+  margin-bottom:1px;
+}
+.room-launch small{
+  display:block;
+  font-size:.71rem;
+  opacity:.9;
+  line-height:1.5;
+}
+.room-launch .arrow{
+  font-size:1.1rem;
+  opacity:.85;
+  flex-shrink:0;
+}
+
+/* ===== Note ===== */
+.note{
+  padding:13px 16px;
+  border-radius:14px;
+  background:#fdf4f8;
+  border:1px solid #f3d7e5;
+  border-right:4px solid #c43e7e;
+  font-size:.79rem;
+  color:#6b4557;
+  line-height:1.75;
+  margin:16px 0 12px;
+}
+.note strong{ color:#a12b62; }
+
+/* ===== Footer ===== */
+footer{
+  text-align:center;
+  font-size:.72rem;
+  color:#a8889a;
+  padding:10px 0 4px;
+}
+
+/* ===== Dialogs ===== */
+dialog{
+  border:none;
+  border-radius:18px;
+  padding:0;
+  max-width:440px;
+  width:calc(100% - 32px);
+  box-shadow:0 20px 60px rgba(122,35,80,.25);
+  overflow:hidden;
+}
+dialog::backdrop{
+  background:rgba(122,35,80,.35);
+  backdrop-filter:blur(3px);
+}
+.modal-head{
+  padding:16px 18px 10px;
+  background:linear-gradient(135deg,#fdeaf3,#fbe0ee);
+  border-bottom:1px solid #f6d3e4;
+}
+.modal-head h3{
+  margin:0 0 3px;
+  font-size:1rem;
+  color:#7a2350;
+  font-weight:800;
+}
+.modal-head p{
+  margin:0;
+  font-size:.76rem;
+  color:#8a6a78;
+}
+.modal-body{
+  padding:14px 18px 18px;
+}
+.field{
+  display:block;
+  margin-bottom:12px;
+}
+.field > span{
+  display:block;
+  font-size:.76rem;
+  font-weight:700;
+  color:#6b4557;
+  margin-bottom:5px;
+}
+.field select,
+.field input{
+  width:100%;
+  padding:9px 12px;
+  border-radius:10px;
+  border:1px solid #ecd0de;
+  background:#fff;
+  font-size:.84rem;
+  color:#4a2b3a;
+  font-family:inherit;
+  box-sizing:border-box;
+  transition:border-color .15s, box-shadow .15s;
+}
+.field select:focus,
+.field input:focus{
+  outline:none;
+  border-color:#c43e7e;
+  box-shadow:0 0 0 3px rgba(196,62,126,.12);
+}
+.field input[readonly]{
+  background:#fdf4f8;
+  color:#a12b62;
+  font-weight:700;
+  cursor:default;
+}
+.subject-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.goal-quick{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.goal-quick button{
+  padding:6px 11px;
+  border-radius:999px;
+  border:1px solid #ecd0de;
+  background:#fff;
+  color:#a12b62;
+  font-size:.74rem;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+  transition:background .15s, border-color .15s;
+}
+.goal-quick button:hover{
+  background:#fdeaf3;
+  border-color:#e6a8c6;
+}
+.modal-actions{
+  display:flex;
+  gap:8px;
+  margin-top:14px;
+}
+.modal-actions .btn{
+  flex:1;
+  font-size:.82rem;
+  padding:10px 14px;
+}
+
+/* ===== Toast ===== */
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:#7a2350;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:600;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s, transform .25s;
+  z-index:9999;
+  box-shadow:0 8px 24px rgba(122,35,80,.35);
+}
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* ===== Focus ===== */
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+a:focus-visible{
+  outline:2px solid #c43e7e;
+  outline-offset:2px;
+  border-radius:8px;
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    transition:none !important;
+    animation:none !important;
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width:640px){
+  .wrap{ padding:14px 12px 26px; }
+  .hero{ padding:18px 16px; border-radius:16px; }
+  .hero h1{ font-size:1.1rem; }
+  .hero p{ font-size:.8rem; }
+  .motivation{ padding:12px 13px; gap:10px; }
+  .motivation strong{ font-size:.82rem; }
+  .motivation p{ font-size:.74rem; }
+  .section-head h2{ font-size:.98rem; }
+  .section-head p{ font-size:.72rem; }
+  .section-head .btn{ font-size:.74rem; padding:7px 12px; }
+  .room-launch{ padding:11px 13px; gap:10px; }
+  .room-launch .room-icon{ width:34px; height:34px; font-size:1.2rem; }
+  .room-launch strong{ font-size:.85rem; }
+  .room-launch small{ font-size:.68rem; }
+  .weekly-stats{ gap:6px; }
+  .weekly-stats > div{ padding:8px 5px; border-radius:10px; }
+  .weekly-stats strong{ font-size:.85rem; }
+  .weekly-stats span{ font-size:.62rem; }
+  .note{ font-size:.74rem; padding:11px 13px; }
+}
+
+@media (max-width:420px){
+  .hero h1{ font-size:1rem; }
+  .hero-badge{ font-size:.66rem; padding:4px 9px; }
+  .progress-top{ font-size:.72rem; }
+  .progress-top span:last-child{ font-size:.76rem; }
+  .weekly-stats strong{ font-size:.78rem; }
+  .weekly-stats span{ font-size:.58rem; }
+  .modal-actions{ flex-direction:column; }
+  .modal-actions .btn{ width:100%; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <!-- ================== Hero ================== -->
+  <header class="hero" role="banner">
+    <div class="eyebrow"></div>
+    <h1>يا ملك، حلمك يستاهل… وإنتِ قدّه بإذن الله.</h1>
+    <p>مش مطلوب منك تكوني مثالية كل يوم؛ المطلوب تسعي بقدر استطاعتك، وتاخدي بالأسباب، وتثقي إن كل خطوة صادقة ليها قيمة. رتّبي يومك، ابدئي بهدوء، وسيبي التوفيق على الله.</p>
+    <div class="hero-badge">خطتك · إنجازك · ومساحتك الآمنة للمحاولة من جديد</div>
+  </header>
+
+  <!-- ================== Motivation ================== -->
+  <section class="motivation" aria-label="رسالة تشجيع">
+    <div class="star" aria-hidden="true">♡</div>
+    <div>
+      <strong>خلي نيتك طيبة، وخطوتك على قد طاقتك</strong>
+      <p>قال الله تعالى: «وَأَنْ لَيْسَ لِلْإِنْسَانِ إِلَّا مَا سَعَى». اسعي بهدوء يا ملك، وماتحمّليش نفسك فوق طاقتها؛ ربنا يعلم تعبك ومحاولتك.</p>
+    </div>
+  </section>
+
+  <!-- ================== Section Head ================== -->
+  <div class="section-head">
+    <div>
+      <h2>رحلتك هذا الأسبوع</h2>
+      <p>اختاري يومًا ومادة، وحددي هدفًا واضحًا تقدري تخلصيه خطوة بخطوة.</p>
+    </div>
+    <button class="btn btn-primary" id="editAll" type="button">✎ تعديل الجدول</button>
+  </div>
+
+  <!-- ================== Progress ================== -->
+  <section class="progress-card" aria-live="polite" aria-label="إنجاز الأسبوع">
+    <div class="progress-top">
+      <span>الأيام اللي حققتِ فيها هدفك</span>
+      <span id="progressText">٠ من ٧ أيام</span>
+    </div>
+    <div class="progress-track"
+         role="progressbar"
+         aria-label="تقدم الأسبوع"
+         aria-valuemin="0"
+         aria-valuemax="7"
+         aria-valuenow="0">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </section>
+
+  <!-- ================== Weekly Stats ================== -->
+  <section class="weekly-stats" id="weeklyStats" aria-label="ملخص الأسبوع">
+    <div><strong>٠</strong><span>أهداف أكدتِها</span></div>
+    <div><strong>٠</strong><span>جلسات انتهى وقتها</span></div>
+    <div><strong>٠ س ٠ د</strong><span>وقت التركيز</span></div>
+  </section>
+  <p class="stats-hint">الجلسة بتتحسب لما المؤقت يخلص، أما الهدف فبيتحسب لما تأكديه بنفسك.</p>
+
+  <div class="stats-actions">
+    <button class="btn btn-soft btn-reset" id="resetStats" type="button" aria-haspopup="dialog">↺ إعادة تعيين الإحصائيات</button>
+  </div>
+
+  <!-- ================== Room Launch ================== -->
+  <button class="room-launch" id="openRoom" type="button">
+    <span class="room-icon" aria-hidden="true">◷</span>
+    <span style="flex:1">
+      <strong>ادخلي غرفة المذاكرة</strong>
+      <small>حددي وقتك وهدفك، وابدئي جلسة هادية بعيد عن المشتتات.</small>
+    </span>
+    <span class="arrow" aria-hidden="true">←</span>
+  </button>
+
+  <!-- ================== Schedule ================== -->
+  <section class="schedule" id="schedule" aria-label="جدول مذاكرة ملك"></section>
+
+  <!-- ================== Note ================== -->
+  <aside class="note">
+    <strong>رسالة ليكي يا ملك:</strong> مش كل يوم هيكون سهل، وده طبيعي. لو قصّرتي، ارجعي من غير جلد للذات؛ ولو تعبتي، ارتاحي من غير ذنب. خدي بالأسباب، واستعيني بالله، وافتكري إن قيمتك أكبر من جدول أو درجة.
+  </aside>
+
+  <!-- ================== Footer ================== -->
+  <footer>مساحة ملك الخاصة · جدولك محفوظ على نفس الجهاز</footer>
+</main>
+
+<!-- ================== Dialog: Editor ================== -->
+<dialog id="editor" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+  <div class="modal-head">
+    <h3 id="modalTitle">تعديل اليوم</h3>
+    <p id="modalDesc">اختاري المواد اللي حابة تذاكريها في اليوم ده.</p>
+  </div>
+  <form class="modal-body" id="editForm" novalidate>
+    <label class="field">
+      <span>اليوم</span>
+      <select id="daySelect"></select>
+    </label>
+
+    <div class="field">
+      <span>المواد</span>
+      <div class="subject-list" id="subjectOptions" role="group" aria-label="اختيار المواد"></div>
+    </div>
+
+    <label class="field">
+      <span>ملاحظة لليوم (اختياري)</span>
+      <input id="dayNote" maxlength="100" placeholder="مثلاً: حل أسئلة على الدرس" autocomplete="off">
+    </label>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" type="submit">حفظ التعديلات</button>
+      <button class="btn btn-soft" type="button" id="cancelEdit">إلغاء</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ================== Dialog: Goal Picker ================== -->
+<dialog id="goalPicker" aria-labelledby="goalPickerTitle" aria-describedby="goalPickerIntro">
+  <div class="modal-head">
+    <h3 id="goalPickerTitle">نحدد هدف الجلسة</h3>
+    <p id="goalPickerIntro">اختاري حاجة صغيرة وواضحة تبدئي بيها.</p>
+  </div>
+  <form class="modal-body" id="goalForm" novalidate>
+    <label class="field">
+      <span>المادة</span>
+      <input id="pickedSubject" maxlength="60" readonly autocomplete="off">
+    </label>
+
+    <div class="field">
+      <span>اختاري هدف أو اكتبي هدفك</span>
+      <div class="goal-quick">
+        <button type="button" data-goal="مراجعة درس وحل ٥ أسئلة">مراجعة درس + ٥ أسئلة</button>
+        <button type="button" data-goal="حل واجب المادة">حل الواجب</button>
+        <button type="button" data-goal="مراجعة أهم النقاط">مراجعة سريعة</button>
+      </div>
+    </div>
+
+    <label class="field">
+      <span>هدفي النهارده</span>
+      <input id="pickedGoal" maxlength="180" placeholder="مثلاً: أفهم أول فكرتين في الدرس" required autocomplete="off">
+    </label>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" type="submit">اختيار المدة والبدء</button>
+      <button class="btn btn-soft" id="cancelGoal" type="button">مش دلوقتي</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ================== Dialog: Reset Stats ================== -->
+<dialog id="resetDialog" aria-labelledby="resetTitle" aria-describedby="resetDesc">
+  <div class="modal-head">
+    <h3 id="resetTitle">إعادة تعيين الإحصائيات</h3>
+    <p id="resetDesc">هنبدأ احتساب تقدّم جديد من الصفر.</p>
+  </div>
+  <div class="modal-body">
+    <ul class="reset-points">
+      <li>هترجع علامات إنجاز الأيام والأهداف اللي أكدتيها والجلسات اللي انتهى وقتها ووقت التركيز إلى الصفر.</li>
+      <li>جدول المذاكرة والمواد والملاحظات والإعدادات <strong>مش هتتحذف ولا تتغير</strong>.</li>
+      <li>لو فيه جلسة شغالة دلوقتي، هتكمل زي ما هي.</li>
+      <li>العملية دي مش بترجع بعد التأكيد.</li>
+    </ul>
+    <p class="reset-error" id="resetError" role="alert" hidden></p>
+    <div class="modal-actions">
+      <button class="btn btn-danger-soft" id="confirmReset" type="button">تأكيد إعادة التعيين</button>
+      <button class="btn btn-soft" id="cancelReset" type="button" autofocus>إلغاء</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- ================== Dialog: Undo Done ================== -->
+<dialog id="undoDialog" aria-labelledby="undoTitle" aria-describedby="undoDesc">
+  <div class="modal-head">
+    <h3 id="undoTitle">إلغاء تأكيد الإنجاز</h3>
+    <p id="undoDesc">هنشيل علامة إنجاز اليوم.</p>
+  </div>
+  <div class="modal-body">
+    <div class="modal-actions">
+      <button class="btn btn-danger-soft" id="confirmUndo" type="button">تأكيد الإلغاء</button>
+      <button class="btn btn-soft" id="cancelUndo" type="button" autofocus>رجوع</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- ================== Toast ================== -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ================== Scripts ================== -->
+<script src="princess.js" defer></script>
+<script src="companion.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>

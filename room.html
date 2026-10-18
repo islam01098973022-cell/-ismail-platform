@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#d94f8a">
+<meta name="description" content="غرفة تركيز ملك: اختاري هدفك ووقتك وابدئي المذاكرة.">
+<title>غرفة التركيز | ملك</title>
+<style>
+  /* ============ المتغيرات والأساسيات ============ */
+  :root {
+    --primary: #6c4b7d;
+    --primary-light: #9b7aad;
+    --primary-lighter: #f3eef7;
+    --primary-dark: #4a3357;
+    --accent: #d4a373;
+    --accent-soft: #f5e6d3;
+    --bg: #faf8fc;
+    --surface: #ffffff;
+    --text: #2d2333;
+    --text-soft: #6b5f73;
+    --text-muted: #9a8fa3;
+    --border: #e8e2ee;
+    --success: #4a9d6e;
+    --success-bg: #e8f5ee;
+    --danger: #c0616b;
+    --shadow-sm: 0 1px 3px rgba(53, 38, 63, 0.06);
+    --shadow-md: 0 4px 16px rgba(53, 38, 63, 0.08);
+    --shadow-lg: 0 8px 32px rgba(53, 38, 63, 0.12);
+    --shadow-glow: 0 0 40px rgba(155, 122, 173, 0.25);
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 50%;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(108, 75, 125, 0.05) 0%, transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(212, 163, 115, 0.05) 0%, transparent 45%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  /* ============ الحاوية ============ */
+  .wrap.room-page {
+    max-width: 680px;
+    width: 100%;
+    padding: 28px 20px 60px;
+  }
+
+  /* ============ رابط الرجوع ============ */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    margin-bottom: 22px;
+    transition: all var(--transition);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .back-link::before {
+    content: '→';
+    font-size: 1.05rem;
+    transition: transform var(--transition);
+  }
+
+  @media (hover:hover) and (pointer:fine){.back-link:hover{
+    border-color: var(--primary-light);
+    background: var(--primary-lighter);
+    transform: translateX(-3px);
+  }}
+
+  @media (hover:hover) and (pointer:fine){.back-link:hover::before{
+    transform: translateX(-3px);
+  }}
+
+  /* ============ اللوحة الرئيسية ============ */
+  .room-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 36px 32px 32px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .room-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 50%, var(--accent) 100%);
+  }
+
+  /* ============ رأس الغرفة ============ */
+  .room-top {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .room-top .mini {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 5px 16px;
+    background: var(--primary-lighter);
+    color: var(--primary);
+    border-radius: 50px;
+    margin-bottom: 14px;
+  }
+
+  .room-top h1 {
+    font-size: 1.7rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .room-top p {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.9;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  /* ============ صندوق الهدف ============ */
+  .goal-box {
+    background: linear-gradient(135deg, #fbf8fd 0%, #f8f4fb 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 22px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 16px;
+  }
+
+  .goal-box > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .goal-box label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .goal-box input {
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+
+  .goal-box input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(155, 122, 173, 0.15);
+  }
+
+  .goal-box input::placeholder {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .goal-box > p {
+    grid-column: 1 / -1;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    padding-top: 4px;
+    border-top: 1px dashed var(--border);
+    margin-top: 2px;
+    padding-top: 12px;
+  }
+
+  /* ============ رسالة الوعد ============ */
+  .promise {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    padding: 14px 20px;
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    margin-bottom: 28px;
+    border: 1px dashed rgba(212, 163, 115, 0.5);
+  }
+
+  .promise strong {
+    color: var(--primary-dark);
+  }
+
+  /* ============ وجه المؤقت ============ */
+  .timer-face {
+    width: 240px;
+    height: 240px;
+    margin: 0 auto 28px;
+    border-radius: var(--radius-full);
+    background: conic-gradient(
+      var(--primary) 0%,
+      var(--primary-light) var(--timer-progress),
+      var(--primary-lighter) var(--timer-progress),
+      var(--primary-lighter) 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: var(--shadow-glow);
+    transition: box-shadow 0.5s ease;
+  }
+
+  .timer-face::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: var(--radius-full);
+    background: var(--surface);
+    box-shadow: inset 0 2px 8px rgba(53, 38, 63, 0.06);
+  }
+
+  .timer-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .timer-time {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: 1px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    transition: color var(--transition);
+  }
+
+  .timer-caption {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-weight: 500;
+    transition: color var(--transition);
+  }
+
+  /* حالة التشغيل */
+  .timer-face.running {
+    animation: timerPulse 2.5s ease-in-out infinite;
+    box-shadow: var(--shadow-glow), 0 0 0 8px rgba(108, 75, 125, 0.06);
+  }
+
+  .timer-face.running .timer-time {
+    color: var(--primary);
+  }
+
+  @keyframes timerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  /* حالة الانتهاء */
+  .timer-face.finished {
+    background: conic-gradient(
+      var(--success) 0%,
+      var(--success) 100%
+    );
+    animation: none;
+    box-shadow: 0 0 40px rgba(74, 157, 110, 0.3);
+  }
+
+  .timer-face.finished .timer-time {
+    color: var(--success);
+  }
+
+  .timer-face.finished .timer-caption {
+    color: var(--success);
+    font-weight: 600;
+  }
+
+  /* ============ إعدادات الغرفة ============ */
+  .room-settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .room-settings label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-soft);
+  }
+
+  .room-settings select {
+    padding: 9px 32px 9px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--surface) url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b5f73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat left 10px center / 16px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    font-weight: 600;
+  }
+
+  .room-settings select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(155, 122, 173, 0.15);
+  }
+
+  /* ============ حالة الغرفة ============ */
+  .room-status {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 10px 16px;
+    background: var(--primary-lighter);
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    line-height: 1.7;
+    transition: background var(--transition), color var(--transition);
+  }
+
+  .room-status.alert {
+    background: #fdf2f2;
+    color: var(--danger);
+  }
+
+  .room-status.success {
+    background: var(--success-bg);
+    color: var(--success);
+    font-weight: 600;
+  }
+
+  /* ============ أزرار التحكم ============ */
+  .room-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 20px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: #fff;
+    box-shadow: 0 3px 12px rgba(108, 75, 125, 0.3);
+    grid-column: 1 / -1;
+    font-size: 1rem;
+    padding: 15px 20px;
+  }
+
+  @media (hover:hover) and (pointer:fine){.btn-primary:hover:not(:disabled){
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 75, 125, 0.4);
+  }}
+
+  .btn-primary.pause {
+    background: linear-gradient(135deg, var(--accent) 0%, #c98a5a 100%);
+    box-shadow: 0 3px 12px rgba(212, 163, 115, 0.35);
+  }
+
+  .btn-primary.pause:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(212, 163, 115, 0.45);
+  }
+
+  .btn-soft {
+    background: var(--primary-lighter);
+    color: var(--primary);
+    border: 1px solid var(--border);
+  }
+
+  @media (hover:hover) and (pointer:fine){.btn-soft:hover:not(:disabled){
+    background: #ebe3f0;
+    border-color: var(--primary-light);
+    transform: translateY(-1px);
+  }}
+
+  .btn-soft[aria-pressed="true"] {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--success) 0%, #3d8a5e 100%);
+    color: #fff;
+    box-shadow: 0 3px 12px rgba(74, 157, 110, 0.3);
+  }
+
+  @media (hover:hover) and (pointer:fine){.btn-success:hover:not(:disabled){
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 157, 110, 0.4);
+  }}
+
+  /* ============ زر الإغلاق ============ */
+  .room-close {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+
+  .room-close:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+    background: #fdf2f2;
+  }
+
+  /* ============ النصائح ============ */
+  .tips {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--accent);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    margin-top: 20px;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    line-height: 1.9;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .tips strong {
+    color: var(--primary-dark);
+  }
+
+  /* ============ التذييل ============ */
+  footer {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 24px 0 0;
+    margin-top: 24px;
+  }
+
+  /* ============ استجابة الشاشات الصغيرة ============ */
+  @media (max-width: 600px) {
+    .wrap.room-page {
+      padding: 16px 14px 48px;
+    }
+
+    .room-panel {
+      padding: 26px 20px 24px;
+      border-radius: var(--radius-md);
+    }
+
+    .room-top h1 {
+      font-size: 1.4rem;
+    }
+
+    .room-top p {
+      font-size: 0.86rem;
+    }
+
+    .goal-box {
+      grid-template-columns: 1fr;
+      padding: 18px;
+    }
+
+    .timer-face {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 24px;
+    }
+
+    .timer-time {
+      font-size: 2.5rem;
+    }
+
+    .timer-caption {
+      font-size: 0.78rem;
+    }
+
+    .room-controls {
+      grid-template-columns: 1fr;
+    }
+
+    .btn-primary {
+      grid-column: auto;
+    }
+
+    .room-settings {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .room-settings label {
+      text-align: center;
+    }
+
+    .room-settings select {
+      width: 100%;
+    }
+
+    .back-link {
+      font-size: 0.82rem;
+      padding: 7px 14px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .timer-face {
+      width: 170px;
+      height: 170px;
+    }
+
+    .timer-time {
+      font-size: 2.1rem;
+    }
+  }
+
+  /* ============ تحسينات الطباعة ============ */
+  @media print {
+    .room-controls, .room-close, .back-link, .room-settings {
+      display: none !important;
+    }
+  }
+
+  /* ============ تقليل الحركة ============ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .timer-face.running {
+      animation: none;
+    }
+  }
+</style>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="icons.css">
+<link rel="stylesheet" href="companion.css">
+<link rel="stylesheet" href="upgrade.css">
+  <link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="malak.css">
+</head>
+<body>
+<main class="wrap room-page">
+  <a class="back-link" href="index.html">الرجوع لخطة الأسبوع</a>
+
+  <section class="room-panel">
+    <header class="room-top">
+      <div class="mini">وقت هادي لنفسك</div>
+      <h1>غرفة التركيز</h1>
+      <p>دي مساحتك الهادية يا ملك. خدي نفس، استعيني بالله، واختاري خطوة واحدة تقدري عليها؛ مش مطلوب منك غير السعي بصدق.</p>
+    </header>
+
+    <section class="goal-box" aria-label="تحديد هدف الجلسة">
+      <div>
+        <label for="subjectInput">المادة</label>
+        <input id="subjectInput" maxlength="60" placeholder="مثلاً: كيمياء" autocomplete="off">
+      </div>
+      <div>
+        <label for="goalInput">هدف الجلسة</label>
+        <input id="goalInput" maxlength="180" placeholder="مثلاً: مراجعة درس وحل ٥ أسئلة" autocomplete="off">
+      </div>
+      <p>انتهاء الوقت معناه إن الجلسة خلصت؛ إنجاز الهدف بتأكديه بنفسك بعد المذاكرة.</p>
+    </section>
+
+    <div class="promise" id="promiseText">اختاري مدة مناسبة وهدفًا صغيرًا. <strong>ابدئي على مهلك.</strong></div>
+
+    <div class="timer-face" id="timerFace" style="--timer-progress:0%" role="img" aria-label="مؤقت التركيز">
+      <div class="timer-inner">
+        <div class="timer-time" id="timerTime">20:00</div>
+        <div class="timer-caption" id="timerCaption">جاهزة للتركيز؟</div>
+      </div>
+    </div>
+
+    <div class="room-settings">
+      <label for="durationSelect">مدة الجلسة</label>
+      <select id="durationSelect">
+        <option value="5">٥ دقائق</option>
+        <option value="10">١٠ دقائق</option>
+        <option value="15">١٥ دقيقة</option>
+        <option value="20" selected>٢٠ دقيقة</option>
+        <option value="25">٢٥ دقيقة</option>
+        <option value="30">٣٠ دقيقة</option>
+        <option value="45">٤٥ دقيقة</option>
+        <option value="60">٦٠ دقيقة</option>
+      </select>
+    </div>
+
+    <div class="room-status" id="roomStatus" aria-live="polite">الموسيقى اختيارية، والجلسة هتشتغل حتى لو الملف مش موجود.</div>
+
+    <div class="room-controls">
+      <button class="btn btn-primary" id="startTimer" type="button">▶ ابدئي المذاكرة</button>
+      <button class="btn btn-soft" id="resetTimer" type="button">↺ إعادة ضبط</button>
+      <button class="btn btn-soft" id="muteMusic" type="button" aria-pressed="false">♪ كتم الموسيقى</button>
+      <button class="btn btn-soft" id="confirmTask" type="button" disabled>✓ أكملت الهدف</button>
+    </div>
+
+    <button class="room-close" id="closeRoom" type="button">إنهاء والعودة للجدول</button>
+
+    <audio id="focusMusic" src="malak.mp3" preload="metadata" loop></audio>
+  </section>
+
+  <aside class="tips">
+    <strong>افتكري يا ملك:</strong> «لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا». خدي بالأسباب من غير قسوة على نفسك؛ لو احتجتي راحة، خديها، وبعدها ارجعي لما تقدري.  </aside>
+
+  <footer>خدي نفس، وابدئي من هنا.</footer>
+</main>
+
+<!-- ================== Dialog: Start without goal ================== -->
+<dialog id="noGoalDialog" aria-labelledby="noGoalTitle" aria-describedby="noGoalDesc">
+  <div class="modal-head">
+    <h3 id="noGoalTitle">لسه مفيش هدف للجلسة</h3>
+    <p id="noGoalDesc">هدف صغير بيساعدك تركزي. تحبي تكتبيه الأول؟</p>
+  </div>
+  <div class="modal-body">
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="noGoalWrite" type="button" autofocus>أكتب هدف</button>
+      <button class="btn btn-soft" id="noGoalGo" type="button">ابدئي من غير هدف</button>
+    </div>
+  </div>
+</dialog>
+<script src="princess.js"></script>
+<script src="companion.js"></script>
+<script src="room.js"></script>
+</body>
+</html>

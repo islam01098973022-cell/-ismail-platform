@@ -1,0 +1,163 @@
+/* malak.css — طبقة التصميم الموحّدة (تُحمَّل آخر ملف وتحسم كل التعارضات) */
+:root{
+  --ink:#4a2140; --ink-soft:#7d5a72; --rose:#d94f8a; --rose-deep:#a8305f; --rose-soft:#fde4ee;
+  --blush:#fff6f9; --gold:#d9a441; --gold-soft:#fff3d6; --line:#f3d3e1;
+  --shadow:0 10px 30px rgba(168,48,95,.12);
+  --primary:var(--rose); --primary-dark:var(--rose-deep); --primary-light:#ea86b3; --primary-lighter:var(--rose-soft);
+  --accent:var(--gold); --accent-soft:var(--gold-soft); --bg:var(--blush); --surface:#fff; --text:var(--ink);
+  --text-soft:var(--ink-soft); --text-muted:#a98699; --border:var(--line);
+  --shadow-md:var(--shadow); --shadow-lg:var(--shadow); --shadow-glow:0 0 40px rgba(217,79,138,.22);
+}
+html body{
+  font-family:'Segoe UI','Noto Naskh Arabic',Tahoma,Arial,sans-serif; color:var(--ink); min-height:100vh;
+  background:radial-gradient(900px 500px at 90% -10%,#ffdcea 0,transparent 60%),
+             radial-gradient(700px 400px at -10% 100%,#fff0d2 0,transparent 55%),var(--blush);
+}
+html body .wrap{max-width:760px;padding:20px 16px 40px}
+/* بطاقات */
+html body .hero,html body .room-top{
+  background:linear-gradient(145deg,#fff 0%,#ffeaf2 100%);border:1px solid var(--line);
+  border-radius:26px;box-shadow:var(--shadow);padding:24px 22px;position:relative;overflow:hidden}
+html body .hero h1,html body .room-top h1,html body .section-head h2{color:var(--rose-deep);font-weight:800}
+html body .hero .eyebrow,html body .hero-badge{background:#fff;color:var(--rose-deep);border:1px solid var(--line);border-style:solid}
+html body .hero p,html body .section-head p,html body .room-top p{color:var(--ink-soft)}
+html body .motivation{background:var(--gold-soft);border:1px solid #f2dfae;border-right:4px solid var(--gold);border-radius:20px;box-shadow:none}
+html body .motivation strong{color:#8a5f0f}html body .motivation p{color:#7a6230}
+html body .motivation .star{color:var(--gold)}
+html body .note,html body .tips,html body .promise{background:#fff;border:1px solid var(--line);border-right:4px solid var(--rose);border-radius:18px;color:var(--ink-soft)}
+html body .note strong,html body .tips strong,html body .promise strong{color:var(--rose-deep)}
+/* تقدم وإحصاءات */
+html body .progress-card,html body .weekly-stats>div{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:none}
+html body .progress-track{background:var(--rose-soft)}
+html body .progress-fill{background:linear-gradient(90deg,#f09ac0,var(--rose))}
+html body .weekly-stats strong,html body .progress-top span:last-child{color:var(--rose-deep)}
+/* أزرار */
+html body .btn{border-radius:999px;font-weight:700;font-family:inherit;transition:transform .15s,box-shadow .15s,background .15s}
+html body .btn-primary,html body .room-launch{background:linear-gradient(135deg,#e5629b,var(--rose-deep));color:#fff;border:0;box-shadow:0 8px 20px rgba(168,48,95,.28)}
+html body .btn-soft{background:#fff;color:var(--rose-deep);border:1px solid var(--line);box-shadow:none}
+@media (hover:hover) and (pointer:fine){html body .btn:hover:not(:disabled){transform:translateY(-1px)}}
+html body .btn:disabled{opacity:.45}
+html body .room-launch{border-radius:22px}
+/* بطاقات الأيام */
+html body .schedule{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+html body .day-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:none;transition:transform .2s,box-shadow .2s}
+@media (hover:hover) and (pointer:fine){html body .day-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}}
+html body .day-card.today{border:2px solid var(--rose);background:linear-gradient(180deg,#fff 0%,#fff0f6 100%);box-shadow:var(--shadow)}
+html body .day-card.done{background:#f4fbf6;border-color:#bfe3cb}
+html body .day-name{color:var(--rose-deep);font-weight:800}
+html body .subject{background:var(--rose-soft);color:var(--rose-deep);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:700;font-family:inherit;cursor:pointer}
+html body .subject:hover{background:#fbd0e2}
+html body .check-btn{background:var(--rose);color:#fff;border:0;border-radius:999px;padding:7px 14px;font-weight:700;font-family:inherit}
+html body .check-btn:disabled{background:#ecd9e2;color:#a98699}
+html body .day-card.done .check-btn{background:#4aa56f}
+/* نوافذ وحقول */
+html body dialog{border-radius:24px;box-shadow:0 24px 70px rgba(74,33,64,.3)}
+html body dialog::backdrop{background:rgba(74,33,64,.42)}
+html body .modal-head{background:linear-gradient(135deg,#ffeaf2,#ffdcea);border-bottom:1px solid var(--line)}
+html body .modal-head h3{color:var(--rose-deep)}
+html body input,html body select{border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-family:inherit}
+html body input:focus,html body select:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(217,79,138,.16);outline:0}
+html body .goal-quick button{border:1px solid var(--line);color:var(--rose-deep);border-radius:999px}
+/* غرفة التركيز */
+html body .room-panel{background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:22px}
+html body .room-top{box-shadow:none;border:0;padding:6px 0 14px;background:none}
+html body .goal-box{background:var(--blush);border:1px solid var(--line);border-radius:20px}
+html body .timer-face{
+  width:230px;height:230px;margin:18px auto;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(var(--rose) var(--timer-progress,0%),#fadbe8 0);box-shadow:var(--shadow-glow)}
+html body .timer-inner{width:196px;height:196px;border-radius:50%;background:#fff;display:grid;place-content:center;text-align:center}
+html body .timer-time{color:var(--rose-deep);font-weight:800;font-size:2.6rem;letter-spacing:1px}
+html body .timer-caption{color:var(--ink-soft)}
+html body .room-status{color:var(--ink-soft);text-align:center}
+html body .back-link{color:var(--rose-deep);font-weight:700}
+html body .room-close{background:none;border:0;color:var(--text-muted);font-family:inherit}
+html body footer{color:var(--text-muted)}
+/* رفيقة المذاكرة */
+html body .cp-card,html body .cp-sheet{background:#fff;border:1px solid var(--line);border-radius:22px;color:var(--ink);box-shadow:0 16px 44px rgba(168,48,95,.22)}
+html body .cp-chip{background:var(--rose-soft);color:var(--rose-deep);border:1px solid var(--line);border-radius:999px}
+html body .cp-ov{background:rgba(74,33,64,.4)}
+@media(max-width:520px){html body .schedule{grid-template-columns:1fr}html body .timer-face{width:200px;height:200px}html body .timer-inner{width:170px;height:170px}}
+
+/* ===== تباين كلام الأميرة ===== */
+html body .cp-card[data-tone]{background:#fffafc;border:1.5px solid #e9a9c6;box-shadow:0 14px 40px rgba(168,48,95,.25)}
+html body .cp-tx{color:#33102a;font-size:15px;font-weight:600;line-height:1.8}
+html body .cp-hd,html body .cp-hd span,html body .cp-card .cp-hd .icon{color:#a8305f;font-weight:800}
+html body .cp-btn{background:#fff;color:#8f2457;border:1.5px solid #e9a9c6;font-weight:700;font-family:inherit;border-radius:999px}
+html body .cp-btn:hover{background:#ffe3ee}
+html body .cp-btn.main{background:linear-gradient(135deg,#e5629b,#a8305f);color:#fff;border-color:transparent}
+html body .cp-x{color:#8f2457}
+html body{--cp-av-w:80px;--cp-av-h:96px}
+/* ===== الرئيسية: ترتيب ومقاسات ===== */
+html body .hero{padding:18px 18px;border-radius:22px;margin-bottom:12px}
+html body .hero h1{font-size:1.15rem;margin-bottom:6px}
+html body .hero p{font-size:.84rem;margin-bottom:10px}
+html body .motivation{padding:11px 14px;margin-bottom:12px}
+html body .room-launch{padding:11px 14px;margin-bottom:14px}
+html body .schedule{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-items:start}
+html body .day-card{padding:12px;border-radius:18px;display:flex;flex-direction:column;gap:8px;min-height:0;height:auto}
+html body .day-card.today{grid-column:1/-1;order:-1;padding:16px}
+html body .day-top{display:flex;justify-content:space-between;align-items:center}
+html body .day-name{font-size:.95rem}
+html body .day-card.today .day-name{font-size:1.1rem}
+html body .day-emoji{font-size:1.05rem}
+html body .subjects{display:flex;flex-wrap:wrap;gap:6px;margin:0}
+html body .subject{font-size:.76rem;padding:4px 10px}
+html body .day-card.today .subject{font-size:.85rem;padding:6px 14px}
+html body .day-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 8px;margin:0}
+html body .day-bottom small{font-size:.7rem;color:#a98699}
+html body .check-btn{font-size:.76rem;padding:7px 12px;min-height:40px;cursor:pointer;max-width:100%}
+html body .day-card:not(.today) .check-btn{flex:1 1 100%}
+html body .day-card [data-edit]{width:100%;margin:0;padding:8px 10px;min-height:40px;font-size:.78rem;cursor:pointer}
+html body .day-note{font-size:.78rem;color:#8a6a78;margin:0;line-height:1.6;overflow-wrap:anywhere}
+@media(max-width:520px){html body{--cp-av-w:64px;--cp-av-h:78px}html body .schedule{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html body .wrap{padding-bottom:28px}
+  html body input,html body select{font-size:16px} /* يمنع تكبير iOS التلقائي عند التركيز */
+  html body .modal-actions .btn{min-height:44px}}
+@media(max-width:359px){html body .schedule{grid-template-columns:minmax(0,1fr)}}
+
+/* ===== النوافذ: تمرير داخلي على الشاشات القصيرة ===== */
+html body dialog{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;margin:auto}
+
+/* ===== إعادة تعيين الإحصائيات ===== */
+html body .stats-actions{display:flex;justify-content:flex-start;margin:0 0 16px}
+html body .btn-reset{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:9px 16px;font-size:.82rem;cursor:pointer;color:var(--rose-deep);background:#fff;border:1px dashed #e3a6c0}
+html body .btn-reset:hover:not(:disabled){background:var(--rose-soft)}
+html body .btn-reset:focus-visible,html body .btn-danger-soft:focus-visible{outline:3px solid rgba(217,79,138,.45);outline-offset:3px}
+html body .reset-points{margin:0 0 12px;padding:0 18px 0 0;font-size:.84rem;line-height:1.9;color:var(--ink-soft)}
+html body .reset-error{margin:0 0 10px;padding:9px 12px;border-radius:12px;background:#fff0f0;border:1px solid #f0c4c4;color:#a33a3a;font-size:.8rem;line-height:1.7}
+html body .reset-error[hidden]{display:none}
+html body .btn-danger-soft{background:linear-gradient(135deg,#e5629b,var(--rose-deep));color:#fff;border:0;cursor:pointer}
+html body .btn:disabled{cursor:not-allowed}
+@media(max-width:520px){html body .btn-reset{width:100%}}
+@media (prefers-reduced-motion:reduce){html body .btn,html body .day-card{transition:none}html body .btn:hover:not(:disabled),html body .day-card:hover{transform:none}}
+
+
+/* ===== الدفعة 2: تجربة الاستخدام ===== */
+/* أ) الأميرة لا تغطي المحتوى على الهاتف: أصغر + هامش سفلي للصفحة بقدر ارتفاعها */
+@media(max-width:520px){
+  html body{--cp-av-w:54px;--cp-av-h:65px}
+  html body .wrap{padding-bottom:calc(var(--cp-av-h) + 30px)}
+  html body .cp{left:4px;bottom:4px}
+  html body .cp-av{opacity:.92}
+}
+/* ب) حالة الأيام: بدون أزرار معطّلة */
+html body .day-bottom-state{border-top:0;padding:0 2px;min-height:0}
+html body .day-bottom-state small{font-size:.74rem;color:#a98699}
+html body .check-btn-past{background:#fff;color:var(--rose-deep);border:1px solid #e3a6c0}
+html body .day-card.done .check-btn-past{background:#4aa56f;color:#fff;border-color:transparent}
+html body .check-btn:focus-visible{outline:3px solid rgba(217,79,138,.45);outline-offset:2px}
+/* ج) توضيح الإحصائيات */
+html body .stats-hint{margin:-4px 2px 10px;font-size:.78rem;line-height:1.7;color:var(--ink-soft)}
+html body .weekly-stats span{line-height:1.5}
+/* د) الموسيقى غير متاحة */
+html body #muteMusic:disabled{opacity:.7;cursor:not-allowed}
+
+/* ===== نافذة اسم الأميرة: قابلة للتمرير ولا يُقصّ زر التخطي على الشاشات القصيرة ===== */
+html body .cp-sheet{overflow-y:auto!important;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px)}
+@media(max-height:760px){
+  html body .cp-sheet .big{width:96px;height:115px;margin-top:-4px}
+  html body .cp-sheet{padding-top:14px;padding-bottom:12px}
+  html body .cp-sheet h3{font-size:17px}
+  html body .cp-sheet p{margin-bottom:8px;font-size:12.5px;line-height:1.7}
+  html body .cp-row{margin:8px 0;gap:6px}
+}
